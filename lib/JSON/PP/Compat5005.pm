@@ -1,11 +1,18 @@
-package JSON::PP5005;
+package JSON::PP::Compat5005;
 
 use 5.005;
 use strict;
 
+BEGIN {
+    if ( $] > 5.006 ) {
+        require Carp;
+        die( "JSON::PP::Compat5005 is for Perl 5.005" );
+    }
+}
+
 my @properties;
 
-$JSON::PP5005::VERSION = '1.10';
+$JSON::PP::Compat5005::VERSION = '1.10';
 
 BEGIN {
 
@@ -26,10 +33,10 @@ BEGIN {
     sub utf8::decode {
     }
 
-    *JSON::PP::JSON_PP_encode_ascii      = \&_encode_ascii;
-    *JSON::PP::JSON_PP_encode_latin1     = \&_encode_latin1;
-    *JSON::PP::JSON_PP_decode_surrogates = \&_decode_surrogates;
-    *JSON::PP::JSON_PP_decode_unicode    = \&_decode_unicode;
+    *JSON::PPdev::JSON_PP_encode_ascii      = \&_encode_ascii;
+    *JSON::PPdev::JSON_PP_encode_latin1     = \&_encode_latin1;
+    *JSON::PPdev::JSON_PP_decode_surrogates = \&_decode_surrogates;
+    *JSON::PPdev::JSON_PP_decode_unicode    = \&_decode_unicode;
 
     # missing in B module.
     sub B::SVp_IOK () { 0x01000000; }
@@ -89,13 +96,7 @@ sub _decode_unicode {
 }
 
 
-sub JSON::PP::incr_parse {
-    local $Carp::CarpLevel = 1;
-    ( $_[0]->{_incr_parser} ||= JSON::PP::IncrParser->new )->incr_parse( @_ );
-}
-
-
-sub JSON::PP::incr_text {
+sub JSON::PPdev::incr_text {
     $_[0]->{_incr_parser} ||= JSON::PP::IncrParser->new;
 
     if ( $_[0]->{_incr_parser}->{incr_parsing} ) {
@@ -107,16 +108,6 @@ sub JSON::PP::incr_text {
 }
 
 
-sub JSON::PP::incr_skip {
-    ( $_[0]->{_incr_parser} ||= JSON::PP::IncrParser->new )->incr_skip;
-}
-
-
-sub JSON::PP::incr_reset {
-    ( $_[0]->{_incr_parser} ||= JSON::PP::IncrParser->new )->incr_reset;
-}
-
-
 1;
 __END__
 
@@ -124,7 +115,7 @@ __END__
 
 =head1 NAME
 
-JSON::PP5005 - Helper module in using JSON::PP in Perl 5.005
+JSON::PP::Compat5005 - Helper module in using JSON::PP in Perl 5.005
 
 =head1 DESCRIPTION
 
