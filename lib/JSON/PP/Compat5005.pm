@@ -4,7 +4,7 @@ use 5.005;
 use strict;
 
 BEGIN {
-    if ( $] > 5.006 ) {
+    if ( $] >= 5.006 ) {
         require Carp;
         die( "JSON::PP::Compat5005 is for Perl 5.005" );
     }
@@ -33,10 +33,10 @@ BEGIN {
     sub utf8::decode {
     }
 
-    *JSON::PPdev::JSON_PP_encode_ascii      = \&_encode_ascii;
-    *JSON::PPdev::JSON_PP_encode_latin1     = \&_encode_latin1;
-    *JSON::PPdev::JSON_PP_decode_surrogates = \&_decode_surrogates;
-    *JSON::PPdev::JSON_PP_decode_unicode    = \&_decode_unicode;
+    *JSON::PP::JSON_PP_encode_ascii      = \&_encode_ascii;
+    *JSON::PP::JSON_PP_encode_latin1     = \&_encode_latin1;
+    *JSON::PP::JSON_PP_decode_surrogates = \&_decode_surrogates;
+    *JSON::PP::JSON_PP_decode_unicode    = \&_decode_unicode;
 
     # missing in B module.
     sub B::SVp_IOK () { 0x01000000; }
@@ -96,7 +96,7 @@ sub _decode_unicode {
 }
 
 
-sub JSON::PPdev::incr_text {
+sub JSON::PP::incr_text {
     $_[0]->{_incr_parser} ||= JSON::PP::IncrParser->new;
 
     if ( $_[0]->{_incr_parser}->{incr_parsing} ) {
